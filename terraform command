@@ -1,2 +1,3 @@
-# terraform plan -var='country={"anjali"="india","aditi"="dubai"}' -var "name1=anjali"
+##Passing map inputs
+$terraform plan -var='country={"anjali"="india","aditi"="dubai"}' -var "name1=anjali" 
 
