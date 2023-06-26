@@ -1,3 +1,60 @@
 ##Passing map inputs
 $terraform plan -var='country={"anjali"="india","aditi"="dubai"}' -var "name1=anjali" 
+===========================================================================================================================
+##terraform variables
+[root@ip-172-31-35-148 mapvariable]# cat main.tf
+variable "name1" {
+type=string
+default = "anjali"
+}
+variable "country" {
+type=string
+default = "india"
+}
 
+output "print" {
+value = "my name is ${var.name1} and coutry is : ${var.country}"
+}
+[root@ip-172-31-35-148 mapvariable]# cat terraform.tfvars
+country = "dubai"
+name = "aditi"
+
+[root@ip-172-31-35-148 mapvariable]# terraform plan
+
+Changes to Outputs:
+  + print = "my name is anjali and coutry is : dubai"
+=======================================================================================================================
+## tfvar file with different name
+[root@ip-172-31-35-148 mapvariable]# cat production.tfvars
+name1 = "advika"
+country = "France"
+[root@ip-172-31-35-148 mapvariable]# terraform plan -var-file=production.tfvars
+
+Changes to Outputs:
+  + print = "my name is advika and coutry is : France"
+=================================================================================================================
+## Export Environment Variable
+[root@ip-172-31-35-148 mapvariable]# export TF_VAR_name1=aayush
+[root@ip-172-31-35-148 mapvariable]# export TF_VAR_country="Paris"
+[root@ip-172-31-35-148 mapvariable]# ls -l
+total 8
+-rw-r--r--. 1 root root 190 Jun 26 07:20 main.tf
+-rw-r--r--. 1 root root  36 Jun 26 07:38 production.tfvars
+[root@ip-172-31-35-148 mapvariable]# terraform plan
+
+Changes to Outputs:
+  + print = "my name is aayush and coutry is : Paris"
+===============================================================================
+## Variable Precedence
+The order of precedence for variable sources is as follows with later sources taking precedence over earlier ones:
+
+1. Environment variables
+
+2. The terraform.tfvars file, if present.
+
+3. The terraform.tfvars.json file, if present.
+
+4. Any *.auto.tfvars or *.auto.tfvars.json files, processed in lexical order of their filenames.
+
+5. Any -var and -var-file options on the command line, in the order they are provided.
+===============================================================================================
